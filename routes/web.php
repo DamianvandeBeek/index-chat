@@ -33,19 +33,21 @@ Route::get('/enter-room/{room_slug}', ['middleware' => 'auth', function ($room_s
     
     foreach($room_from_url as $room) {
     
+            $count = 0;
     $split_member = explode(" ", $room->members);
         
         foreach($split_member as $seperate_member) {
             
-            if($seperate_member == Auth::user()->name) {
-                
-        $all_messages = DB::table('messages')->where('room_id', '=', $room->id)->orderBy('id', 'DESC')->get();
-        return view('enter_room')->with('all_messages', $all_messages)->with('room_info', $room);
-                
+            if($seperate_member != Auth::user()->name) {
+                $count++;
             } else {
-                return redirect('home');
+        $all_messages = DB::table('messages')->where('room_id', '=', $room->id)->orderBy('id', 'DESC')->get();
+        return view('enter_room')->with('all_messages', $all_messages)->with('room_info', $room);  
             }
             
+            if ($count == count($split_member)) {
+                return redirect('home');
+            }
             
         }
         

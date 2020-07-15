@@ -42,7 +42,6 @@ class pageController extends Controller
                }
            }
        }
-  
         
         return view('your_rooms')->with('all_rooms', $room_names);
     }
