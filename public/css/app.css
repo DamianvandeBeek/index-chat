@@ -9475,7 +9475,7 @@ a.text-dark:hover {
 
 
 .message_area {
-    height: 60vh;
+    height: 100vh;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .4);
     margin-bottom: 2rem;
     padding: 2rem;

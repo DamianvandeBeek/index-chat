@@ -23,8 +23,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/admin', ['middleware' => 'auth', 'uses' => 'pageController@admin'])->name('admin');
 Route::get('/make-chatroom', ['middleware' => 'auth', 'uses' => 'pageController@make_chatroom'])->name('make_chatroom');
 Route::get('/your-rooms', ['middleware' => 'auth', 'uses' => 'pageController@your_rooms'])->name('your_rooms');
-Route::get('/url-already-exist', ['middleware' => 'auth', 'uses' => 'pageController@slug_already_exist'])->name('slug_already_exist');
-
 
 Route::get('/enter-room/{room_slug}', ['middleware' => 'auth', function ($room_slug) {
     
@@ -34,7 +32,7 @@ Route::get('/enter-room/{room_slug}', ['middleware' => 'auth', function ($room_s
     foreach($room_from_url as $room) {
     
             $count = 0;
-    $split_member = explode(" ", $room->members);
+            $split_member = explode(" ", $room->members);
         
         foreach($split_member as $seperate_member) {
             
@@ -48,13 +46,16 @@ Route::get('/enter-room/{room_slug}', ['middleware' => 'auth', function ($room_s
             if ($count == count($split_member)) {
                 return redirect('home');
             }
-            
         }
-        
-  
     }
 }]);
 
+
+Route::get('/load-messages/{room_id}', ['middleware' => 'auth', function ($room_id) {
+    
+        $all_messages = DB::table('messages')->where('room_id', '=', $room_id)->orderBy('id', 'DESC')->get();
+        return view('load_messages')->with('all_messages', $all_messages);  
+    }]);
 
 
 Route::post('/generate-room', 'pageController@generate_room')->name('generate_room');

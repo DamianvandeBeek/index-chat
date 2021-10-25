@@ -79,27 +79,28 @@ class pageController extends Controller
                  'members' => Auth::user()->name
                 ]);
             
-            return redirect('your-rooms');
+            return redirect('your-rooms')->with("status", "Room succesfully created");
             } else {
                 
-            return redirect('url-already-exist');
+            return redirect()->back()->with("status", "Room name already exists!");
             }
     }
     
     
     
     public function add_user_to_room(Request $request) {
-       
-        $old_room_members = DB::table('rooms')->where('id', '=', $request->input('room_id'))->pluck('members');
+        
+        if (DB::table('users')->where('name', '=', $request->input('added_user'))->exists()) {
+            
+             $old_room_members = DB::table('rooms')->where('id', '=', $request->input('room_id'))->pluck('members');
      
-        $new_room_members = $old_room_members[0] . " " . $request->input('added_user');
+            $new_room_members = $old_room_members[0] . " " . $request->input('added_user');
         
-        DB::table('rooms')->where('id', '=', $request->input('room_id'))
-            ->update(['members' => $new_room_members]);
-        
-        return back();
-    
+            DB::table('rooms')->where('id', '=', $request->input('room_id'))
+                ->update(['members' => $new_room_members]);
+        return redirect()->back()->with("status", "User is added!");
+        } else {
+        return redirect()->back()->with("status", "User doesn't exist!");
+        }
     }
-    
-    
 }

@@ -14,9 +14,10 @@
                     </div>
                     @endif
                     
+            <iframe src="/load-messages/{{$room_info->id}}" frameborder="0" style="height:50vh;width:100%;overflow-y:hidden;" scrolling="no"></iframe>
+                   
                     <form method="POST" action="/send-message">
                         @csrf
-
                         <div class="form-group row">
                             <div class="col-md-8">
                                 <input id="message" type="text" class="form-control{{ $errors->has('message') ? ' is-invalid' : '' }}" name="message" placeholder="Type your message here..." required autofocus>
@@ -30,20 +31,13 @@
                             <input type="text" value="{{$room_info->id}}" style="display:none" name="room_id">
                             <div class="col-md-2">
                                 <button type="submit" class="btn btn-primary">
-                                    Send
+                                    Send or press Enter
                                 </button>
                             </div>
                         </div>
-
                     </form>
-
-                  <div class="message_area">
-                   @foreach($all_messages as $messages) 
-                   <b>{{$messages->author}}: </b>{{$messages->message}}<br>
-                   <i style="color: grey; font-size:8pt;">~{{$messages->created_at}}</i><hr><br>
-                   @endforeach
-                  </div>
-                   
+                        
+                        <hr><br><br>
                    <form method="POST" action="/add-user-to-room">
                         @csrf
 
